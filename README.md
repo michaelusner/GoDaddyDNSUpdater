@@ -10,6 +10,8 @@ If you have a subdomain, you can change the 'record' field in data.py from '@' t
 
 ## Installation
 (This utility should be compatible with Python2 and Python3)
+* Please consider using a virtual environment to isolate requirements
+
 ```
 pip install -r requirements.txt
 ```
