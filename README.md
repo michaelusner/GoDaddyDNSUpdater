@@ -10,6 +10,7 @@ If you have a subdomain, you can change the 'record' field in data.py from '@' t
 
 ## Installation
 (This utility should be compatible with Python2 and Python3)
+* Though instructions are taylored toward Linux, this utility should work fine in Windows as well.
 * Please consider using a virtual environment to isolate requirements: https://docs.python-guide.org/dev/virtualenvs/
 
 ```
@@ -23,6 +24,7 @@ pip install -r requirements.txt
    https://developer.godaddy.com/
 2) Run the utility on your local system to update the DNS record for GoDaddy.
   ```
+  > source .venv/bin/activate
   > python set_ip.py
   ```
    
