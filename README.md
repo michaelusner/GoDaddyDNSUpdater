@@ -18,6 +18,8 @@ pip install -r requirements.txt
 1) Fill out the relevant fields in the data.py file.  You can obtain the secret and key from
    https://developer.godaddy.com/
 2) Run the utility on your local system to update the DNS record for GoDaddy.
-   > python set_ip.py
+  ```
+  > python set_ip.py
+  ```
    
 It's recommended that you set up a cron job to execute periodically
