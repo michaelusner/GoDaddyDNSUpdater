@@ -8,8 +8,16 @@ This program will update your main domain name to point to your local IP address
 The default name for your domain record is '@'.
 If you have a subdomain, you can change the 'record' field in data.py from '@' to your subdomain name.
 
-USAGE:
+## Installation
+(This utility should be compatible with Python2 and Python3)
+```
+pip install -r requirements.txt
+```
+
+## USAGE
 1) Fill out the relevant fields in the data.py file.  You can obtain the secret and key from
    https://developer.godaddy.com/
 2) Run the utility on your local system to update the DNS record for GoDaddy.
-   > python 
+   > python set_ip.py
+   
+It's recommended that you set up a cron job to execute periodically
