@@ -11,8 +11,11 @@ If you have a subdomain, you can change the 'record' field in data.py from '@' t
 ## Installation
 (This utility should be compatible with Python2 and Python3)
 * Please consider using a virtual environment to isolate requirements
+  https://docs.python-guide.org/dev/virtualenvs/
 
 ```
+python3 -m virtualenv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
