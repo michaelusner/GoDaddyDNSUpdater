@@ -10,7 +10,7 @@ If you have a subdomain, you can change the 'record' field in data.py from '@' t
 
 ## Installation
 
-(This utility should be compatible with Python2 and Python3)
+(This utility should be compatible with Python2 and Python3 - let's please not use python2 though, OK?)
 * Though instructions are taylored toward Linux, this utility should work fine in Windows as well.
 * Please consider using a virtual environment to isolate requirements: https://docs.python-guide.org/dev/virtualenvs/
 
