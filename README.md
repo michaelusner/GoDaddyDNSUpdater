@@ -1,12 +1,14 @@
 # GoDaddyDNSUpdater
-Updates GoDaddy DNS records to your current IP.  Useful as a dynamic DNS update tool if you don't want to use
-freedns.afraid.org or dyndns.org etc.
+If you want to be able to access your home network remotely but your ISP uses dynamic IP addresses, then this utility is for you.
 
-If an update is not necessary, the utility will not perform it.
+Using this, you can update your GoDaddy DNS records to your current IP.  Useful as a dynamic DNS update tool if you don't want to use
+freedns.afraid.org or dyndns.org etc.  I run it from a Raspberry PI.
 
 This program will update your main domain name to point to your local IP address.
 The default name for your domain record is '@'.
-If you have a subdomain, you can change the 'record' field in data.py from '@' to your subdomain name.
+If you have a subdomain, you can change the 'RECORD' field in your .env file or environment variables from '@' to your subdomain name.
+
+Note that if an IP update is not necessary, the utility will not perform it.
 
 ## Installation
 
