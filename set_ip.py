@@ -2,7 +2,7 @@
 ******************************************************************************
 MIT License
 
-Copyright (c) 2017 Michael Usner
+Copyright (c) 2017-2020 Michael Usner
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -32,17 +32,19 @@ This utility is compatible with Python2/3.
 Package requirements: requests>=2.4.3
 Install with "pip install requests"
 
-You need to create a 'data.py' file with the following information
-obtained from GoDaddy:
-key = '<your API key>'
-secret = '<your secret key>'
-domain = 'your domain name (i.e. example.com)'
+You need to create a '.env' file (or set env vars) with the following
+information obtained from GoDaddy:
+
+KEY = '<your API key>'
+SECRET = '<your secret key>'
+DOMAIN = 'your domain name (i.e. example.com)'
+RECORD = '@'  (optional - @ indicates top-level domain)
 
 See https://developer.godaddy.com/ for more information.
 '''
 import json
 import requests
-import data
+from decouple import config
 
 
 class ApiException(Exception):
@@ -64,8 +66,9 @@ def get_godaddy_record_ip(domain, record, key, secret):
         format(domain, record),
         headers={'Authorization': 'sso-key {}:{}'.format(key, secret)})
     if response.status_code != 200:
-        raise ApiException('Failed to retrieve DNS record for {}/{}'.format(domain, record))
-    return json.loads(response.text)[0]['data'].strip()
+        raise ApiException(
+            'Failed to retrieve DNS record for {}/{}'.format(domain, record))
+    return response.json()[0]['data'].strip()
 
 
 def get_current_ip():
@@ -97,15 +100,16 @@ def set_godaddy_dns_ip(domain=None, record='@', key=None, secret=None, ip_addres
 
     # make the API request to GoDaddy to set the IP
     response = requests.put(
-        'https://api.godaddy.com/v1/domains/{}/records/A/{}'.format(domain, record),
+        'https://api.godaddy.com/v1/domains/{}/records/A/{}'.format(
+            domain, record),
         headers={
             'Authorization': 'sso-key {}:{}'.format(key, secret),
             'Content-Type': 'application/json'
         },
-        data=json.dumps({
+        data=json.dumps([{
             'ttl': 3600,
             'data': ip_address
-        })
+        }])
     )
     # handle any issues
     if response.status_code != 200:
@@ -138,7 +142,11 @@ def update_godaddy_record(domain, record, key, secret):
 
 
 if __name__ == '__main__':
-    if update_godaddy_record(data.DOMAIN, data.RECORD, data.KEY, data.SECRET) is not None:
+    if update_godaddy_record(
+            config("DOMAIN"),
+            config("RECORD", "@"),
+            config("KEY"),
+            config("SECRET")) is not None:
         exit(0)
     else:
         print("Failed to set GoDaddy DNS record IP")

@@ -9,6 +9,7 @@ The default name for your domain record is '@'.
 If you have a subdomain, you can change the 'record' field in data.py from '@' to your subdomain name.
 
 ## Installation
+
 (This utility should be compatible with Python2 and Python3)
 * Though instructions are taylored toward Linux, this utility should work fine in Windows as well.
 * Please consider using a virtual environment to isolate requirements: https://docs.python-guide.org/dev/virtualenvs/
@@ -20,8 +21,20 @@ pip install -r requirements.txt
 ```
 
 ## USAGE
-1) Fill out the relevant fields in the data.py file.  You can obtain the secret and key from
+1) Fill out the relevant fields in the .env file or environment variables.
+
+    # Your GoDaddy API key
+    KEY = "<key>"
+
+    # Your GoDaddy API secret key"
+    SECRET = "<secret>"
+
+    # Your domain name - ex: example.com"
+    DOMAIN = "example.com"
+
+   You can obtain the secret and key from
    https://developer.godaddy.com/
+
 2) Run the utility on your local system to update the DNS record for GoDaddy.
   ```
   > source .venv/bin/activate
