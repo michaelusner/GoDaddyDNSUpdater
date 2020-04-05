@@ -43,13 +43,14 @@ RECORD = '@'  (optional - @ indicates top-level domain)
 See https://developer.godaddy.com/ for more information.
 '''
 import json
+import sys
 import requests
 from decouple import config
 
 
 class ApiException(Exception):
     ''' Generic exception class '''
-    pass
+    pass    # pylint: disable=unnecessary-pass
 
 
 def get_godaddy_record_ip(domain, record, key, secret):
@@ -76,7 +77,11 @@ def get_current_ip():
     return json.loads(requests.get('http://ipinfo.io/json').text)['ip'].strip()
 
 
-def set_godaddy_dns_ip(domain=None, record='@', key=None, secret=None, ip_address=None):
+def set_godaddy_dns_ip(domain=None,
+                       record='@',
+                       key=None,
+                       secret=None,
+                       ip_address=None):
     '''
     Update a GoDaddy DNS record
 
@@ -131,14 +136,21 @@ def update_godaddy_record(domain, record, key, secret):
     # if they're different, update the GoDaddy record
     if godaddy_ip == current_ip:
         print('No update necessary.')
-        return current_ip
+        return True
+
+    # set the IP for the DNS record
+    print('\nUpdating DNS IP to {}'.format(current_ip))
+    set_godaddy_dns_ip(domain, record, key, secret, current_ip)
+
+    # verify that the IP got set
+    if get_godaddy_record_ip(domain, record, key, secret) == current_ip:
+        print("Successfully set {}/{} to {}".format(
+            domain,
+            record,
+            current_ip))
     else:
-        print('\nUpdating DNS IP to {}'.format(current_ip))
-        if not set_godaddy_dns_ip(domain, record, key, secret, current_ip):
-            return None
-        if get_godaddy_record_ip(domain, record, key, secret) == current_ip:
-            print("Successfully set {}/{} to {}".format(domain, record, current_ip))
-            return current_ip
+        raise AssertionError("Failed to set DNS record IP")
+    return True
 
 
 if __name__ == '__main__':
@@ -146,8 +158,8 @@ if __name__ == '__main__':
             config("DOMAIN"),
             config("RECORD", "@"),
             config("KEY"),
-            config("SECRET")) is not None:
-        exit(0)
+            config("SECRET")):
+        sys.exit(0)
     else:
         print("Failed to set GoDaddy DNS record IP")
-        exit(-1)
+        sys.exit(-1)
